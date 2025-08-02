@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vt.mapper.CommentMapper">
+
+    <resultMap id="BaseResultMap" type="com.vt.domain.Comment">
+            <id property="commentId" column="comment_id" jdbcType="BIGINT"/>
+            <result property="packageName" column="package_name" jdbcType="VARCHAR"/>
+            <result property="operatorId" column="operator_id" jdbcType="VARCHAR"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="desc" column="desc" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        comment_id,package_name,operator_id,
+        content,modify_time,create_time,
+        desc
+    </sql>
+</mapper>

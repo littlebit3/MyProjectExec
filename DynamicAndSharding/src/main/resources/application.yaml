@@ -1,0 +1,66 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    dynamic:
+      primary: sharding
+      strict: true
+      datasource:
+        master:
+          url: jdbc:mysql://localhost:3306/t_user?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+          username: root
+          password: root
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          type: com.zaxxer.hikari.HikariDataSource
+
+# 修正后的 ShardingSphere 配置
+  shardingsphere:
+    datasource:  # 改为 datasource 而不是 database
+      names: dy_0,dy_1,dy_2
+      dy_0:
+        url: jdbc:mysql://localhost:3306/dynamic_0?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+        username: root
+        password: root
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+      dy_1:
+        url: jdbc:mysql://localhost:3306/dynamic_1?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+        username: root
+        password: root
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+      dy_2:
+        url: jdbc:mysql://localhost:3306/dynamic_2?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+        username: root
+        password: root
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+    rules:
+      sharding:
+        tables:
+          t_comment:
+            # 修正：将中文逗号改为英文逗号，并调整分片表达式使其匹配
+            actual-data-nodes: dy_0.t_comment_${0..9},dy_1.t_comment_${10..19},dy_2.t_comment_${20..29}
+            table-strategy:
+              standard:
+                sharding-column: comment_id
+                sharding-algorithm-name: comment-inline
+            database-strategy:
+              standard:
+                sharding-column: comment_id
+                sharding-algorithm-name: database-inline
+        sharding-algorithms:
+          comment-inline:
+            type: INLINE
+            props:
+              # 修正：根据你的 actual-data-nodes，需要使用正确的分片表达式
+              algorithm-expression: t_comment_${comment_id % 30}
+          database-inline:
+            type: INLINE
+            props:
+              # 修正：根据你的数据源分布，调整为正确的表达式
+              algorithm-expression: dy_${(comment_id % 30) / 10}
+
+    props:
+      sql-show: true
