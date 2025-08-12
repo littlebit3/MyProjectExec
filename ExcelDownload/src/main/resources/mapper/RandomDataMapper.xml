@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vt.mapper.RandomDataMapper">
+
+    <resultMap id="BaseResultMap" type="com.vt.domain.model.RandomData">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="gender" column="gender" jdbcType="VARCHAR"/>
+            <result property="score" column="score" jdbcType="VARCHAR"/>
+            <result property="birthday" column="birthday" jdbcType="TIMESTAMP"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="salary" column="salary" jdbcType="DECIMAL"/>
+            <result property="grade" column="grade" jdbcType="VARCHAR"/>
+            <result property="city" column="city" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,gender,
+        score,birthday,phone,
+        email,salary,grade,
+        city
+    </sql>
+</mapper>
